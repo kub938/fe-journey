@@ -11,10 +11,11 @@ let dual_array = Array(2)
   .map((e) => Array(4).fill(0));
 
 console.log(dual_array);
+
 // 공백 기반 분할 [O(N)]
 const str = "Hello World";
 let ret = str.split(" ");
-console.log(ret);
+console.log(ret); //[ 'Hello', 'World' ]
 
 // 리스트 str으로 합치기 [O(N)]
 non_space_elem = ret.join(""); //사이에 삽입할 것을 명시
