@@ -108,3 +108,14 @@ console.log(Math.floor(2.01234 * 10 ** 2) / 10 ** 2); // 2.01
 //절댓값
 console.log(Math.abs(2)); // 2
 console.log(Math.abs(-2)); // 2
+
+//최대,최소값은 아래와 같이 초기화 가능
+let max = -Infinity;
+let min = Infinity;
+
+//형변환
+//간단하게 앞에 +를 붙이면 정수형으로 형변환이 가능 하다
+//Number()와 같은 효과
+const number = +"12";
+
+console.log(number);
