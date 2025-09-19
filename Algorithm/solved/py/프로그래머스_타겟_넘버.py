@@ -46,3 +46,27 @@ def solution(numbers, target):
         return dfs(i + 1, total + numbers[i]) + dfs(i + 1, total - numbers[i])
 
     return dfs(0, 0)
+
+
+# DP 풀이
+# i = 숫자를 합/뺀 결과값
+# i 번째까지 봤을때 합이 얼마인가?
+# dp의 key, value 값은 합이 key가 몇번나왔는지 = value
+# key값에서 number을 +,- 한 값을 key로 잡고 +1씩, 그중 target값을 출력
+
+def solution(numbers, target):
+    n = len(numbers)
+    dp = {0:1}
+    for i in numbers:
+        tmp = {}
+        for k, value in dp.items():
+            sum_value = k+i
+            minus_value = k-i
+            tmp[sum_value] = tmp.get(sum_value, 0) + value
+            tmp[minus_value] = tmp.get(minus_value, 0) + value
+            # get(sum_value, 0) 은 sum_value가 없으면 0을 리턴하는 함수
+            
+        dp = tmp
+    return dp[target]
+
+
