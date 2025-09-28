@@ -4,45 +4,44 @@ import { MouseCoords } from "@/types/mouse";
 import { useEffect, useRef, useState } from "react";
 
 const SmootherFollower = () => {
-  const [targetCoords, setTargetCoords] = useState<MouseCoords>({ x: 0, y: 0 });
-  const [currentCoords, setCurrentCoords] = useState<MouseCoords>({
-    x: 0,
-    y: 0,
-  });
+  const [current, setCurrent] = useState<MouseCoords>({ x: 0, y: 0 });
+  const targetRef = useRef<MouseCoords>({ x: 0, y: 0 });
+  const rafRef = useRef<number>(0);
 
   useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove);
-    animationRef.current = requestAnimationFrame(animate);
+    const onMove = (e: MouseEvent) => {
+      targetRef.current = { x: e.clientX, y: e.clientY };
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+
+    const animate = () => {
+      setCurrent((prev) => {
+        const t = targetRef.current;
+        return {
+          x: prev.x + (t.x - prev.x) * 0.1,
+          y: prev.y + (t.y - prev.y) * 0.1,
+        };
+      });
+      rafRef.current = requestAnimationFrame(animate);
+    };
+
+    rafRef.current = requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      cancelAnimationFrame(animationRef.current);
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(rafRef.current);
     };
-  }, [targetCoords]);
-
-  const animationRef = useRef<number>(0);
-  const handleMouseMove = (e: MouseEvent) => {
-    setTargetCoords({ x: e.clientX, y: e.clientY });
-  };
-
-  const animate = () => {
-    const newX = currentCoords.x + (targetCoords.x - currentCoords.x) * 0.9;
-    const newY = currentCoords.y + (targetCoords.y - currentCoords.y) * 0.9;
-    setCurrentCoords({ x: newX, y: newY });
-    animationRef.current = requestAnimationFrame(animate);
-  };
+  }, []);
 
   const followerStyle: React.CSSProperties = {
-    position: "absolute",
+    position: "fixed",
     width: "50px",
     height: "50px",
     backgroundColor: "red",
     zIndex: 999,
 
-    left: `${currentCoords.x}px`,
-    top: `${currentCoords.y}px`,
-
-    // 요소 중앙을 커서에 맞추기 위해 자신의 크기 50%만큼 되돌리기
+    left: `${current.x}px`,
+    top: `${current.y}px`,
 
     pointerEvents: "none",
   };
