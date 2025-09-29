@@ -1,0 +1,6 @@
+.wrap {
+  border: solid black 1px;
+  background-color: rgb(255, 255, 255);
+  width: 100vw;
+  height: vh;
+}
