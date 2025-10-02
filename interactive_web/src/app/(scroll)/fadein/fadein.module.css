@@ -1,0 +1,25 @@
+.base {
+  opacity: 0;
+  transition-property: opacity, transform;
+}
+
+.visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.up {
+  transform: translateY(3rem); /* 12 * 0.25rem = 3rem */
+}
+
+.down {
+  transform: translateY(-3rem);
+}
+
+.left {
+  transform: translateX(3rem);
+}
+
+.right {
+  transform: translateX(-3rem);
+}
