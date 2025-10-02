@@ -7,7 +7,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="kr">
-      <body>{children}</body>
+      <body
+        style={{
+          height: "100vh",
+          width: "100vh",
+        }}
+      >
+        {children}
+      </body>
     </html>
   );
 }
