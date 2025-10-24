@@ -15,7 +15,7 @@ function Card({ rotateY }: CardProps) {
     <Perspective>
       <div
         ref={ref}
-        className={styles.container}
+        className={styles.card}
         style={{ transform: `rotateY(${rotateY}deg) rotateX(15deg)` }}
       >
         {isInView ? "보입니다" : "안보여요"}
