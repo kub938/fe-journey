@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="box">box</div>
+    <button id="btn">btn</button>
+    <script>
+      const box = document.getElementById("box");
+      const btn = document.getElementById("btn");
+
+      const observer = new MutationObserver((mutations) => {
+        console.log("DOM changed:", mutations);
+      });
+
+      observer.observe(box, { childList: true });
+
+      btn.addEventListener("click", () => {
+        const newEl = document.createElement("p");
+        newEl.textContent = "New element added";
+        setTimeout(() => {
+          console.log("setTimeout");
+        }, 0);
+        box.appendChild(newEl);
+      });
+    </script>
+
+    <script>
+      function delay(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
+      Promise.resolve()
+        .then(async () => {
+          console.log("1번 시작");
+          await delay(2000);
+          return "넘어가요";
+        })
+        .then((value) => {
+          console.log(value);
+        });
+
+      Promise.resolve().then(() => {
+        console.log("2번 실행"); // await 없음
+      });
+
+      Promise.resolve().then(() => {
+        console.log("3번 실행"); // await 없음
+      });
+
+      setTimeout(() => {
+        console.log("setTimeout (1초 후)");
+      }, 1000);
+    </script>
+  </body>
+</html>
+
+<!-- MutationObserver도 Microtask queue에 들어간다  -->
+<!-- queueMicrotask()를 사용하면 임의로 micro task queue에 넣을 수 있다-->
