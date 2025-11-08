@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Upload Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+    .upload-section {
+      margin: 20px 0;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>File Upload Test</h1>
+
+  <div class="upload-section">
+    <h2>Single File Upload</h2>
+    <input type="file" id="fileInput">
+    <button onclick="uploadFile()">Upload</button>
+  </div>
+
+  <div class="upload-section">
+    <h2>Multiple File Upload</h2>
+    <input type="file" id="filesInput" multiple>
+    <button onclick="uploadMultipleFiles()">Upload Multiple</button>
+  </div>
+
+  <div id="result"></div>
+
+  <script>
+    const BaseURL = "http://localhost:3000";
+
+    async function uploadFile() {
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert('Please select a file');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch(`${BaseURL}/upload`, {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+        document.getElementById('result').innerHTML =
+          `<h3>Success!</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+      } catch (error) {
+        document.getElementById('result').innerHTML =
+          `<h3>Error!</h3><p>${error.message}</p>`;
+      }
+    }
+
+    async function uploadMultipleFiles() {
+      const filesInput = document.getElementById('filesInput');
+      const files = filesInput.files;
+
+      if (files.length === 0) {
+        alert('Please select files');
+        return;
+      }
+
+      const formData = new FormData();
+      for (let file of files) {
+        formData.append('files', file);
+      }
+
+      try {
+        const response = await fetch(`${BaseURL}/upload-multiple`, {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+        document.getElementById('result').innerHTML =
+          `<h3>Success!</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+      } catch (error) {
+        document.getElementById('result').innerHTML =
+          `<h3>Error!</h3><p>${error.message}</p>`;
+      }
+    }
+  </script>
+</body>
+</html>
