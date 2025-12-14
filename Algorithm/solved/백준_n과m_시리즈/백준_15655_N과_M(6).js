@@ -1,0 +1,27 @@
+const fs = require("fs");
+const file_path = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
+const input = fs.readFileSync(file_path).toString().trim().split("\n");
+
+//중복 x 조합
+
+const [n, m] = input[0].split(" ").map(Number);
+const arr = input[1].split(" ").map(Number);
+let result = "";
+let dfsArr = [];
+arr.sort((a, b) => a - b);
+
+function dfs(depth, start) {
+  if (depth === m) {
+    result += dfsArr.join(" ") + "\n";
+    return;
+  }
+
+  for (let i = start + 1; i < n + 1; i++) {
+    dfsArr.push(arr[i - 1]);
+    dfs(depth + 1, i);
+    dfsArr.pop();
+  }
+}
+
+dfs(0, 0);
+console.log(result);
