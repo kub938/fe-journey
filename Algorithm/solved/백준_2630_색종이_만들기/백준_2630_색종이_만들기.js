@@ -8,20 +8,21 @@ let whiteCnt = 0;
 let blueCnt = 0;
 
 function check(half, r, c) {
+  const type = board[r][c];
   for (let i = r; i < r + half; i++) {
-    for (let j = c + 1; j < c + half; j++) {
-      if (board[i][j] !== board[i][j - 1]) {
+    for (let j = c; j < c + half; j++) {
+      if (board[i][j] !== type) {
         return false;
       }
     }
   }
 
-  board[r][c] === 0 ? whiteCnt++ : blueCnt++;
   return true;
 }
 
 function dfs(n, r, c) {
-  if (check(n, r, c)) {
+  if (check(n, r, c) || n === 1) {
+    board[r][c] === 0 ? whiteCnt++ : blueCnt++;
     return;
   }
 
@@ -34,4 +35,5 @@ function dfs(n, r, c) {
 
 dfs(n, 0, 0);
 
-console.log(blueCnt, whiteCnt);
+console.log(whiteCnt);
+console.log(blueCnt);
